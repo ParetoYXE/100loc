@@ -3,14 +3,14 @@ pygame.init()
 width=800
 height=800
 background = [255,255,255]
-stats = [{'text':"Heat:",'X':661,'Y':80,'value':0},{'text':"Wood:",'X':664,'Y':120,'value':0},{'text':"Energy:",'X':663,'Y':160,'value':30},{'text':"Moves:",'X':663,'Y':190,'value':0},{'text':"Food:",'X':663,'Y':220,'value':0}]
-entities = [{'name':'player','hp':3,'X':500,'Y':300},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":100,"height":100},{'name':'augs','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":10,"height":5}]
-for i in range(random.randint(10,30)):
+stats = [{'text':"Heat:",'X':661,'Y':80,'value':0},{'text':"Wood:",'X':664,'Y':120,'value':0},{'text':"Energy:",'X':663,'Y':160,'value':300000},{'text':"Moves:",'X':663,'Y':190,'value':0},{'text':"Food:",'X':663,'Y':220,'value':0}]
+entities = [{'name':'player','hp':3000000,'X':500,'Y':300,'height':40,'width':40},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":100,"height":100}]
+for i in range(random.randint(10,50)):
 	entities.append({'name':'tree','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
 for j in range(random.randint(1,4)):
 	entities.append({'name':'moose','hp':3,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
-for k in range(random.randint(1,50)):
-	entities.append({'name':'augs','hp':1,'X':random.randint(0,width),'Y':random.randint(0,height),"width":40,"height":40})
+for k in range(random.randint(1,10)):
+	entities.append({'name':'augs','hp':3,'X':random.randint(0,width),'Y':random.randint(0,height),"width":60,"height":60})
 screen = pygame.display.set_mode( [width, height ] )
 screen.fill(background)
 pygame.display.set_caption('100LOC')
@@ -51,12 +51,22 @@ def collisionDetection():
 				if(entities[i]['name'] == "tree" and entities[i]['hp']>0):
 					stats[1]['value']+=1
 					entities[i]['hp']-=1
-				if(entities[i]['name'] == "aaugs" and entities[i]['hp']>0):
+				if(entities[i]['name'] == "augs" and entities[i]['hp']>0):
 					stats[2]['value']-=1
 				if(entities[i]['name'] == "moose" and entities[i]['hp']>0):
 					hit =  random.randint(0,10)
 					stats[4]['value'] += hit
 					entities[i]['hp'] -= hit
+		if(entities[i]['name'] == "fireAttack"):
+			posx = entities[i]['X']
+			posy = entities[i]['Y']
+			entities[i]['hp'] -= 1
+
+			for j in range(0, len(entities)):
+				if(entities[j]['Y']< posy and posy < entities[j]['Y']+entities[j]['height']):
+					if(entities[j]['X'] < posx and posx < entities[j]['X']+entities[j]['width']):
+						entities[j]['hp'] -= 1
+
 def getInput(pos):
 	x,y = pos
 	if(entities[0]['X'] < x):
@@ -92,29 +102,36 @@ while (running):
 				if(stats[2]['value'] > 0):
 					stats[2]['value'] -= 1
 					collisionDetection()
-					getInput(event.pos)
+					if(not attack):
+						getInput(event.pos)
 				if(attack):
 					x,y = event.pos
-					entities.append({'name':'fireAttack','hp':3,'X':x,'Y':y,'width':10, 'height':10})
+					if(abs(x - entities[0]["X"]) < 100):
+						if(abs(y - entities[0]["Y"]) < 100):
+							if(stats[1]['value']>3):
+								stats[1]['value']-=3
+								entities.append({'name':'fireAttack','hp':random.randint(1,6),'X':x,'Y':y,'width':40, 'height':10})
 				screen.fill(background)
 				npcAI()
 				drawEntities()
 				drawText()
-				if(stats[2]['value']<=0):
+				if(stats[2]['value']<=0 or entities[0]['hp'] <= 0):
 					gameOver()
 				if(random.randint(0,30) < 3):
 					entities.append({'name':'tree','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
+				if(random.randint(0,100) < 5):
+					entities.append({'name':'moose','hp':3,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
 				pygame.display.update()
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_r:
 				stats = [{'text':"Heat:",'X':661,'Y':80,'value':0},{'text':"Wood:",'X':664,'Y':120,'value':0},{'text':"Energy:",'X':663,'Y':160,'value':30},{'text':"Moves:",'X':663,'Y':190,'value':0},{'text':"Food:",'X':663,'Y':220,'value':0}]
-				entities = [{'name':'player','hp':3,'X':500,'Y':300},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":100,"height":100},{'name':'augs','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":10,"height":5}]
-				for i in range(random.randint(4,12)):
+				entities = [{'name':'player','hp':3,'X':500,'Y':300, 'width':40,'height':40},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":100,"height":100}]
+				for i in range(random.randint(10,50)):
 					entities.append({'name':'tree','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
 				for j in range(random.randint(1,4)):
 					entities.append({'name':'moose','hp':3,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
-				for k in range(random.randint(1,50)):
-					entities.append({'name':'augs','hp':1,'X':random.randint(0,width),'Y':random.randint(0,height),"width":40,"height":40})
+				for k in range(random.randint(1,10)):
+					entities.append({'name':'augs','hp':1,'X':random.randint(0,width),'Y':random.randint(0,height),"width":60,"height":60})
 				screen.fill(background)
 				drawEntities()
 				drawText()
