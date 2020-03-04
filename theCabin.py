@@ -3,7 +3,7 @@ pygame.init()
 width=800
 height=800
 background = [255,255,255]
-stats = [{'text':"Heat:",'X':661,'Y':80,'value':0},{'text':"Wood:",'X':664,'Y':120,'value':0},{'text':"Energy:",'X':663,'Y':160,'value':300000},{'text':"Moves:",'X':663,'Y':190,'value':0},{'text':"Food:",'X':663,'Y':220,'value':0}]
+stats = [{'text':"Heat:",'X':661,'Y':80,'value':0},{'text':"Wood:",'X':664,'Y':120,'value':0},{'text':"Energy:",'X':663,'Y':160,'value':100},{'text':"Moves:",'X':663,'Y':190,'value':0},{'text':"Food:",'X':663,'Y':220,'value':0}]
 entities = [{'name':'player','hp':3000000,'X':500,'Y':300,'height':40,'width':40},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":100,"height":100}]
 for i in range(random.randint(10,50)):
 	entities.append({'name':'tree','hp':5,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90})
