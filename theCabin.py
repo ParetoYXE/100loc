@@ -14,7 +14,7 @@ stats = [{'text':"Heat:",'X':width,'Y':80,'value':0},{'text':"Wood:",'X':width,'
 currentMap = 12
 entities = [{'name':'player','hp':3000000,'X':500,'Y':300,'height':40,'width':40,"map":currentMap},{'name':'cabin','hp':500,'X':width/2,'Y':height/2,"width":183,"height":188,"map":currentMap},{'name':'AJM9','hp':500,'X':random.randint(1,800),'Y':random.randint(1,700),"width":150,"height":150,"map":currentMap}]
 for i in range(random.randint(20,70)):
-	entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
+	entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width/40)*40,'Y':random.randint(0,height/40)*40,"width":50,"height":90,"map":currentMap})
 for j in range(random.randint(1,4)):
 	entities.append({'name':'moose','hp':10,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
 for k in range(random.randint(1,5)):
@@ -371,7 +371,7 @@ def collisionDetection(xMouse,yMouse):
 	y = entities[0]['Y']
 	for i in range(1,len(entities)):
 		if((entities[i]['Y'] + entities[i]['height'] >= y) and (y >=(entities[i]['Y']))):
-			if((entities[i]['X'] + entities[i]['width'] >= x) and (x >= (entities[i]['X']))):
+			if((entities[i]['X'] + entities[i]['width'] >= x) and (x >= (entities[i]['X']-entities[i]['width']))):
 				if((entities[i]['name'] == "cabin" and entities[i]["map"]==currentMap) or (entities[i]['name'] == "cabin_heat" and entities[i]["map"]==currentMap)):
 						print("In House")
 						if(stats[1]['value'] > 0):
@@ -529,7 +529,7 @@ def collisionDetection(xMouse,yMouse):
 					firstTime = False
 			if(firstTime):
 				for i in range(random.randint(20,20*(wildlifeIntensity))):
-					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
+					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width/40)*40,'Y':random.randint(0,height/40)*40,"width":50,"height":90,"map":currentMap})
 				for j in range(random.randint(1,wildlifeIntensity)):
 					entities.append({'name':'moose','hp':10,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
 				for k in range(random.randint(1,enemyIntensity)):
@@ -553,7 +553,7 @@ def collisionDetection(xMouse,yMouse):
 					firstTime = False
 			if(firstTime):
 				for i in range(random.randint(20,20*(wildlifeIntensity))):
-					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
+					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width/40)*40,'Y':random.randint(0,height/40)*40,"width":50,"height":90,"map":currentMap})
 				for j in range(random.randint(1,wildlifeIntensity)):
 					entities.append({'name':'moose','hp':10,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
 				for k in range(random.randint(1,enemyIntensity)):
@@ -577,7 +577,7 @@ def collisionDetection(xMouse,yMouse):
 					firstTime = False
 			if(firstTime):
 				for i in range(random.randint(20,20*(wildlifeIntensity))):
-					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
+					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width/40)*40,'Y':random.randint(0,height/40)*40,"width":50,"height":90,"map":currentMap})
 				for j in range(random.randint(1,wildlifeIntensity)):
 					entities.append({'name':'moose','hp':10,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
 				for k in range(random.randint(1,enemyIntensity)):
@@ -601,7 +601,7 @@ def collisionDetection(xMouse,yMouse):
 					firstTime = False
 			if(firstTime):
 				for i in range(random.randint(20,20*(wildlifeIntensity))):
-					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
+					entities.append({'name':'tree','hp':random.randint(5,20),'X':random.randint(0,width/40)*40,'Y':random.randint(0,height/40)*40,"width":50,"height":90,"map":currentMap})
 				for j in range(random.randint(1,wildlifeIntensity)):
 					entities.append({'name':'moose','hp':10,'X':random.randint(0,width),'Y':random.randint(0,height),"width":50,"height":90,"map":currentMap})
 				for k in range(random.randint(1,enemyIntensity)):
@@ -620,13 +620,13 @@ def collisionDetection(xMouse,yMouse):
 def getInput(pos):
 	x,y = pos
 	if(entities[0]['X'] < x):
-		entities[0]['X'] +=20
+		entities[0]['X'] +=width/40
 	if(entities[0]['X'] > x):
-		entities[0]['X'] -=20
+		entities[0]['X'] -=width/40
 	if(entities[0]['Y'] < y):
-		entities[0]['Y'] +=20
+		entities[0]['Y'] +=height/40
 	if(entities[0]['Y'] > y):
-		entities[0]['Y'] -=20
+		entities[0]['Y'] -=height/40
 def npcAI():
 	for i in entities:
 		if i['name'] == 'moose':
@@ -768,3 +768,5 @@ while (running):
 			if event.key == pygame.K_m:
 				inMenu = not inMenu
 				print(inMenu)
+			if event.key == pygame.K_ESCAPE:
+				running = False
